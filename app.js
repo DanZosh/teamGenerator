@@ -44,10 +44,10 @@ function askUserForManagerInfo(){
         const newManager = new Manager(managerData.managerName, managerData.managerID, managerData.managerEmail, managerData.managerOfficeNumber)
 
         employeeArray.push(newManager);
-        console.log(newManager)
-        console.log(employeeArray)
+        // console.log(newManager)
+        // console.log(employeeArray)
 
-        // askUserForEmployeeType()
+        askUserForEmployeeType()
 
     });
 
@@ -56,39 +56,110 @@ function askUserForManagerInfo(){
 function askUserForEmployeeType(){
     return inquirer.prompt([
         {
-        message:"Ask a question: ",
-        name:"name",
-        type:"list",
+        type:"list", 
+        name:"newMember",
+        message:"Would you like to add another member?",
+        choices:[
+            'Engineer',
+            'Intern',
+            'I do not want to add anyone else.',
+        ]
+
         }
     ]).then((newEmployeeChoiceData) => {
-        //if the selected new engineer
-        askUserForEngineerInfo()
-        //else if the user selected a new intern
-        askUserForInternInfo()
-        //else 
-        createHtmlFile() //this is the code from  
+        //IF the selected new engineer
+        // console.log(newEmployeeChoiceData.newMember)
+        if(newEmployeeChoiceData.newMember == "Engineer"){
+            askUserForEngineerInfo()
+        }
+    
+        //ELSE IF the user selected a new intern
+        else if(newEmployeeChoiceData.newMember == "Intern"){
+            askUserForInternInfo()
+        }
+        else{
+        console.log(employeeArray)
+        createHtmlFile()
+        }
     });
     
 }
 
-//ask user for engineer info
+//ASK user for engineer info
 function askUserForEngineerInfo(){
+    return inquirer.prompt([
+        {
+            message:"What is the Engineer's Name: ",
+            name:"engineerName",
+            type:"input",
+        },
+        {
+            message:"What is the Engineer's ID: ",
+            name:"engineerID",
+            type:"input",
+        },
+        {
+            message:"What is the Engineer's Email: ",
+            name:"engineerEmail",
+            type:"input",
+        },
+        {
+            message:"What is the Engineer's Github: ",
+            name:"engineerGithub",
+            type:"input",
+        }
+    ]).then((engineerData) => {
+        //PASS the data to the class constructor
+        const newEngineer = new Engineer(engineerData.engineerName, engineerData.engineerID, engineerData.engineerEmail, engineerData.engineerGithub)
 
+        employeeArray.push(newEngineer);
+        // console.log(newEngineer)
+        // console.log(employeeArray)
+        askUserForEmployeeType()
+    });
 }
 
 //ask user for intern info
 function askUserForInternInfo(){
-    
+    return inquirer.prompt([
+        {
+            message:"What is the Intern's Name: ",
+            name:"internName",
+            type:"input",
+        },
+        {
+            message:"What is the Intern's ID: ",
+            name:"internID",
+            type:"input",
+        },
+        {
+            message:"What is the Intern's Email: ",
+            name:"internEmail",
+            type:"input",
+        },
+        {
+            message:"What is the Intern's School: ",
+            name:"internSchool",
+            type:"input",
+        }
+    ]).then((internData) => {
+        //PASS the data to the class constructor
+        const newIntern = new Intern(internData.internName, internData.internID, internData.internEmail, internData.internSchool)
+
+        employeeArray.push(newIntern);
+        // console.log(newIntern)
+        // console.log(employeeArray)
+        askUserForEmployeeType()
+    });
 }
+
+
 //to polish this, move the functions here into their own files
 //add some more functionality to play with the way this appears in the console.log with colors or extra whitespace
-
-
 
 function createHtmlFile(){
     const htmlContent = render(employeeArray) ; 
 }
-
 
 askUserForManagerInfo()
 //return to ask fro next employee and dont seelect any more
