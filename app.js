@@ -10,6 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+
 //Create an employee list
 const employeeArray=[];
 
@@ -78,7 +79,7 @@ function askUserForEmployeeType(){
             askUserForInternInfo()
         }
         else{
-        console.log(employeeArray)
+        // console.log(employeeArray)
         createHtmlFile()
         }
     });
@@ -158,11 +159,18 @@ function askUserForInternInfo(){
 //add some more functionality to play with the way this appears in the console.log with colors or extra whitespace
 
 function createHtmlFile(){
+    // console.log("hi",employeeArray)
     const htmlContent = render(employeeArray) ; 
+
+    fs.writeFile("./output/team.html", htmlContent, (err) => {
+        err?
+        console.log('failed to write file'):
+        console.log('wrote file')
+    })
 }
 
 askUserForManagerInfo()
-//return to ask fro next employee and dont seelect any more
+
 //when finished an html file should show up in the browser from the htmlRenderer.js file
 
 
