@@ -10,6 +10,93 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+//Create an employee list
+const employeeArray=[];
+
+
+//Ask for manager info: name, id email office number...
+function askUserForManagerInfo(){
+
+    return inquirer.prompt([
+        {
+            message:"What is the Manger's Name: ",
+            name:"managerName",
+            type:"input",
+        },
+        {
+            message:"What is the Manger's ID: ",
+            name:"managerID",
+            type:"input",
+        },
+        {
+            message:"What is the Manger's Email: ",
+            name:"managerEmail",
+            type:"input",
+        },
+        {
+            message:"What is the Manger's Number: ",
+            name:"managerOfficeNumber",
+            type:"input",
+        }
+    ]).then((managerData) => {
+        //pass the data to the class constructor
+
+        const newManager = new Manager(managerData.managerName, managerData.managerID, managerData.managerEmail, managerData.managerOfficeNumber)
+
+        employeeArray.push(newManager);
+        console.log(newManager)
+        console.log(employeeArray)
+
+        // askUserForEmployeeType()
+
+    });
+
+}
+//Ask uer for next employee type; provide a list: Engineer, intern, i dont want to add any more team members
+function askUserForEmployeeType(){
+    return inquirer.prompt([
+        {
+        message:"Ask a question: ",
+        name:"name",
+        type:"list",
+        }
+    ]).then((newEmployeeChoiceData) => {
+        //if the selected new engineer
+        askUserForEngineerInfo()
+        //else if the user selected a new intern
+        askUserForInternInfo()
+        //else 
+        createHtmlFile() //this is the code from  
+    });
+    
+}
+
+//ask user for engineer info
+function askUserForEngineerInfo(){
+
+}
+
+//ask user for intern info
+function askUserForInternInfo(){
+    
+}
+//to polish this, move the functions here into their own files
+//add some more functionality to play with the way this appears in the console.log with colors or extra whitespace
+
+
+
+function createHtmlFile(){
+    const htmlContent = render(employeeArray) ; 
+}
+
+
+askUserForManagerInfo()
+//return to ask fro next employee and dont seelect any more
+//when finished an html file should show up in the browser from the htmlRenderer.js file
+
+
+
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
