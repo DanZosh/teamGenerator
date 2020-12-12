@@ -5,7 +5,10 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
+//REQUIRE decoupled functions
 const askUserForManagerInfo = require("./lib/askUserForManagerInfo");
+const askUserForEngineerInfo = require("./lib/askUserForEngineerInfo");
+const askUserForInternInfo = require("./lib/askUserForInternInfo");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -74,12 +77,28 @@ function askUserForEmployeeType(){
         //IF the selected new engineer
         // console.log(newEmployeeChoiceData.newMember)
         if(newEmployeeChoiceData.newMember == "Engineer"){
-            askUserForEngineerInfo()
+            askUserForEngineerInfo().then((engineerData) => {
+                //PASS the data to the class constructor
+                const newEngineer = new Engineer(engineerData.engineerName, engineerData.engineerID, engineerData.engineerEmail, engineerData.engineerGithub)
+        
+                employeeArray.push(newEngineer);
+                // console.log(newEngineer)
+                // console.log(employeeArray)
+                askUserForEmployeeType()
+            });
         }
     
         //ELSE IF the user selected a new intern
         else if(newEmployeeChoiceData.newMember == "Intern"){
-            askUserForInternInfo()
+            askUserForInternInfo().then((internData) => {
+                //PASS the data to the class constructor
+                const newIntern = new Intern(internData.internName, internData.internID, internData.internEmail, internData.internSchool)
+        
+                employeeArray.push(newIntern);
+                // console.log(newIntern)
+                // console.log(employeeArray)
+                askUserForEmployeeType()
+            });
         }
         else{
         // console.log(employeeArray)
@@ -90,72 +109,73 @@ function askUserForEmployeeType(){
 }
 
 //ASK user for engineer info
-function askUserForEngineerInfo(){
-    return inquirer.prompt([
-        {
-            message:"What is the Engineer's Name: ",
-            name:"engineerName",
-            type:"input",
-        },
-        {
-            message:"What is the Engineer's ID: ",
-            name:"engineerID",
-            type:"input",
-        },
-        {
-            message:"What is the Engineer's Email: ",
-            name:"engineerEmail",
-            type:"input",
-        },
-        {
-            message:"What is the Engineer's Github: ",
-            name:"engineerGithub",
-            type:"input",
-        }
-    ]).then((engineerData) => {
-        //PASS the data to the class constructor
-        const newEngineer = new Engineer(engineerData.engineerName, engineerData.engineerID, engineerData.engineerEmail, engineerData.engineerGithub)
+// function askUserForEngineerInfo(){
+//     return inquirer.prompt([
+//         {
+//             message:"What is the Engineer's Name: ",
+//             name:"engineerName",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Engineer's ID: ",
+//             name:"engineerID",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Engineer's Email: ",
+//             name:"engineerEmail",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Engineer's Github: ",
+//             name:"engineerGithub",
+//             type:"input",
+//         }
+//     ])
+// askUserForEngineerInfo().then((engineerData) => {
+//         //PASS the data to the class constructor
+//         const newEngineer = new Engineer(engineerData.engineerName, engineerData.engineerID, engineerData.engineerEmail, engineerData.engineerGithub)
 
-        employeeArray.push(newEngineer);
-        // console.log(newEngineer)
-        // console.log(employeeArray)
-        askUserForEmployeeType()
-    });
-}
+//         employeeArray.push(newEngineer);
+//         // console.log(newEngineer)
+//         // console.log(employeeArray)
+//         askUserForEmployeeType()
+//     });
+// }
 
 //ask user for intern info
-function askUserForInternInfo(){
-    return inquirer.prompt([
-        {
-            message:"What is the Intern's Name: ",
-            name:"internName",
-            type:"input",
-        },
-        {
-            message:"What is the Intern's ID: ",
-            name:"internID",
-            type:"input",
-        },
-        {
-            message:"What is the Intern's Email: ",
-            name:"internEmail",
-            type:"input",
-        },
-        {
-            message:"What is the Intern's School: ",
-            name:"internSchool",
-            type:"input",
-        }
-    ]).then((internData) => {
-        //PASS the data to the class constructor
-        const newIntern = new Intern(internData.internName, internData.internID, internData.internEmail, internData.internSchool)
+// function askUserForInternInfo(){
+//     return inquirer.prompt([
+//         {
+//             message:"What is the Intern's Name: ",
+//             name:"internName",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Intern's ID: ",
+//             name:"internID",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Intern's Email: ",
+//             name:"internEmail",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Intern's School: ",
+//             name:"internSchool",
+//             type:"input",
+//         }
+//     ]).then((internData) => {
+//         //PASS the data to the class constructor
+//         const newIntern = new Intern(internData.internName, internData.internID, internData.internEmail, internData.internSchool)
 
-        employeeArray.push(newIntern);
-        // console.log(newIntern)
-        // console.log(employeeArray)
-        askUserForEmployeeType()
-    });
-}
+//         employeeArray.push(newIntern);
+//         // console.log(newIntern)
+//         // console.log(employeeArray)
+//         askUserForEmployeeType()
+//     });
+// }
 
 
 //to polish this, move the functions here into their own files
