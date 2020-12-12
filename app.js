@@ -5,6 +5,8 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
+const askUserForManagerInfo = require("./lib/askUserForManagerInfo");
+
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
@@ -16,43 +18,44 @@ const employeeArray=[];
 
 
 //Ask for manager info: name, id email office number...
-function askUserForManagerInfo(){
+// function askUserForManagerInfo(){
 
-    return inquirer.prompt([
-        {
-            message:"What is the Manger's Name: ",
-            name:"managerName",
-            type:"input",
-        },
-        {
-            message:"What is the Manger's ID: ",
-            name:"managerID",
-            type:"input",
-        },
-        {
-            message:"What is the Manger's Email: ",
-            name:"managerEmail",
-            type:"input",
-        },
-        {
-            message:"What is the Manger's Number: ",
-            name:"managerOfficeNumber",
-            type:"input",
-        }
-    ]).then((managerData) => {
-        //pass the data to the class constructor
+//     return inquirer.prompt([
+//         {
+//             message:"What is the Manger's Name: ",
+//             name:"managerName",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Manger's ID: ",
+//             name:"managerID",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Manger's Email: ",
+//             name:"managerEmail",
+//             type:"input",
+//         },
+//         {
+//             message:"What is the Manger's Number: ",
+//             name:"managerOfficeNumber",
+//             type:"input",
+//         }
+//     ]).then((managerData) => {
+//         //pass the data to the class constructor
 
-        const newManager = new Manager(managerData.managerName, managerData.managerID, managerData.managerEmail, managerData.managerOfficeNumber)
+//         const newManager = new Manager(managerData.managerName, managerData.managerID, managerData.managerEmail, managerData.managerOfficeNumber)
 
-        employeeArray.push(newManager);
-        // console.log(newManager)
-        // console.log(employeeArray)
+//         employeeArray.push(newManager);
+//         // console.log(newManager)
+//         // console.log(employeeArray)
 
-        askUserForEmployeeType()
+//         askUserForEmployeeType()
 
-    });
+//     });
 
-}
+// }
+
 //Ask uer for next employee type; provide a list: Engineer, intern, i dont want to add any more team members
 function askUserForEmployeeType(){
     return inquirer.prompt([
@@ -169,7 +172,18 @@ function createHtmlFile(){
     })
 }
 
-askUserForManagerInfo()
+askUserForManagerInfo().then((managerData) => {
+    //pass the data to the class constructor
+
+    const newManager = new Manager(managerData.managerName, managerData.managerID, managerData.managerEmail, managerData.managerOfficeNumber)
+
+    employeeArray.push(newManager);
+    // console.log(newManager)
+    // console.log(employeeArray)
+
+    askUserForEmployeeType()
+
+});
 
 //when finished an html file should show up in the browser from the htmlRenderer.js file
 
